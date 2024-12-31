@@ -32,7 +32,7 @@ const UserModel = {
 
   async createUser(user: User): Promise<UserWithId> {
     const auth_status = true;
-    const { name, email, password } = user;
+    const { name, email, password, history } = user;
 
     const _hashPassword = await hashPassword(password);
 
@@ -41,6 +41,7 @@ const UserModel = {
       email,
       password: _hashPassword,
       auth_status,
+      history
     };
 
     const docRef = await userCollection.add(data);
