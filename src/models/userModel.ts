@@ -30,6 +30,28 @@ const UserModel = {
     return { id: querySnapshot.docs[0].id, ...user };
   },
 
+  async authUserLogin(user: User) {
+    const { email, password } = user;
+
+    try {
+      const querySnapshot = await userCollection
+        .where('email', '==', email)
+        .where('password', '==', password)
+        .get();
+
+      if (querySnapshot.empty) {
+        return null;
+      }
+
+      const doc = querySnapshot.docs[0];
+      const userData = doc.data();
+
+      return { id: doc.id, ...userData };
+    } catch (err) {
+      throw new Error(`Erro ao autenticar usuário: ${err}`);
+    }
+  },
+
   async createUser(user: User): Promise<UserWithId> {
     const auth_status = true;
     const { name, email, password, history } = user;

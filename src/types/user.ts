@@ -1,8 +1,11 @@
-export interface User {
+export interface UserBase {
   name: string;
   email: string;
   password: string;
-  history?: UserHistory;
+}
+
+export interface User extends UserBase {
+  history: UserHistory;
 }
 
 export interface UserWithId extends User {
@@ -10,8 +13,8 @@ export interface UserWithId extends User {
 }
 
 export interface UserHistory {
-  updates: Array<HistoryEntry>;
-  deletions: Array<HistoryEntry>;
+  updates: HistoryEntry[];
+  deletions: HistoryEntry[];
 }
 
 export interface HistoryEntry {
@@ -20,3 +23,16 @@ export interface HistoryEntry {
   created_at: string;
   ip_address: string;
 }
+
+export interface UserJwt {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export interface AuthenticatedUser {
+  id: string;
+  email: string;
+  name: string;
+}
+

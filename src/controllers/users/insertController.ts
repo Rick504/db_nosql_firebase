@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { setToken } from '../../security/token';
 import userModel from '../../models/userModel';
-import { User } from '../../types/user';
+import { User, UserJwt } from '../../types/user';
 
 const registerController = async (req: Request, res: Response) => {
   try {
@@ -24,7 +24,7 @@ const registerController = async (req: Request, res: Response) => {
     const userDd = await userModel.createUser(user);
 
 
-    const userDataJWT = {
+    const userDataJWT: UserJwt = {
       id: userDd.id,
       name: userDd.name,
       email: userDd.email,

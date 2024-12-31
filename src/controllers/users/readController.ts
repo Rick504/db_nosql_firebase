@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import userModel from '../../models/userModel';
+import { UserJwt } from '../../types/user';
 
-const readController = async (req: Request, res: Response) => {
+const readController = async (req: Request, res: Response): Promise<Response> => {
   try {
     const jwtSecret = process.env.JWT_SECRET as string;
     const token = req.headers['x-access-token'] as string;
-    const decoded = jwt.verify(token, jwtSecret) as { userDataJWT: { email: string } };
-    console.log('userDataJWT', decoded.userDataJWT)
+    const decoded = jwt.verify(token, jwtSecret) as { userDataJWT: UserJwt };
     const { id } = decoded.userDataJWT;
 
     const user = await userModel.getUserById(id);

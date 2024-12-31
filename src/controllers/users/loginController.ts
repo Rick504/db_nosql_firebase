@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import { setToken } from '../security/token';
-import { authUserLogin, getUserByEmail } from '../../models/userModel';
+import { setToken } from '../../security/token';
+import UserModel from '../../models/userModel';
 import bcrypt from 'bcrypt';
 
 const loginController = async (req: Request, res: Response) => {
   try {
     let { email, password } = req.body;
-    const userDb = await getUserByEmail(email);
+    const userDb: any = await UserModel.getUserByEmail(email);
 
     if (!userDb || !bcrypt.compareSync(password, userDb.password)) {
       return res.status(401).json({ error: 'Usuário ou senha incorretos.' });
@@ -16,10 +16,10 @@ const loginController = async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Falha ao efetuar login. Conta não autorizada.' });
     }
 
-    const userValidaty = await authUserLogin({
+    const userValidaty: any = await UserModel.authUserLogin({
       email: email,
       password: userDb.password,
-    });
+    } as any);
 
     if (!userValidaty) {
       return res.status(401).json({ error: 'Credenciais inválidas.' });
