@@ -1,9 +1,11 @@
 import { Router, Request, Response } from 'express';
 import registerController from '../controllers/users/insertController';
+import readController from '../controllers/users/readController';
 import userModel from '../models/userModel';
 
 const router = Router();
 
+router.get('/user/', readController);
 router.post('/register', registerController);
 
 router.get('/', (req: Request, res: Response) => {

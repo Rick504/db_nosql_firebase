@@ -21,6 +21,15 @@ const UserModel = {
     })) as UserWithId[];
   },
 
+  async getUserByEmail(email: string) {
+    const querySnapshot = await userCollection.where('email', '==', email).get();
+    if (querySnapshot.empty) {
+      return false;
+    }
+    const user = querySnapshot.docs[0].data();
+    return { id: querySnapshot.docs[0].id, ...user };
+  },
+
   async createUser(user: User): Promise<UserWithId> {
     const auth_status = true;
     const { name, email, password } = user;
@@ -35,6 +44,7 @@ const UserModel = {
     };
 
     const docRef = await userCollection.add(data);
+
     return { id: docRef.id, ...data };
   },
 

@@ -7,12 +7,18 @@ const registerController = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
 
+    const existingUser = await userModel.getUserByEmail(email);
+    if (existingUser) {
+      return res.status(409).json('Email já cadastrado!');
+    }
+
     const user: User = {
       name,
       email,
       password,
     };
     const userDd = await userModel.createUser(user);
+
 
     const userDataJWT = {
       id: userDd.id,
