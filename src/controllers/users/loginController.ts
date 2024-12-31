@@ -3,7 +3,7 @@ import { setToken } from '../../security/token';
 import UserModel from '../../models/userModel';
 import bcrypt from 'bcrypt';
 
-const loginController = async (req: Request, res: Response) => {
+const loginController: any = async (req: Request, res: Response) => {
   try {
     let { email, password } = req.body;
     const userDb: any = await UserModel.getUserByEmail(email);

@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import userModel from '../../models/userModel';
 import { UserJwt } from '../../types/user';
 
-const readController = async (req: Request, res: Response): Promise<Response> => {
+const readController: any = async (req: Request, res: Response) => {
   try {
     const jwtSecret = process.env.JWT_SECRET as string;
     const token = req.headers['x-access-token'] as string;
@@ -24,3 +24,4 @@ const readController = async (req: Request, res: Response): Promise<Response> =>
 };
 
 export default readController;
+

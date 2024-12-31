@@ -3,7 +3,7 @@ import { setToken } from '../../security/token';
 import userModel from '../../models/userModel';
 import { User, UserJwt } from '../../types/user';
 
-const registerController = async (req: Request, res: Response) => {
+const registerController: any  = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
 
