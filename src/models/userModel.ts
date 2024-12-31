@@ -2,9 +2,15 @@
 
 import { firestore } from 'firebase-admin';
 import { User, UserWithId } from '../types/user';
+import bcrypt from 'bcrypt';
 
 const db = firestore();
 const userCollection = db.collection('users');
+
+function hashPassword(password: string) {
+  const saltRounds = 10
+  return bcrypt.hash(password, saltRounds)
+}
 
 const UserModel = {
   async getAllUsers(): Promise<UserWithId[]> {
@@ -15,7 +21,19 @@ const UserModel = {
     })) as UserWithId[];
   },
 
-  async createUser(data: User): Promise<UserWithId> {
+  async createUser(user: User): Promise<UserWithId> {
+    const auth_status = true;
+    const { name, email, password } = user;
+
+    const _hashPassword = await hashPassword(password);
+
+    const data = {
+      name,
+      email,
+      password: _hashPassword,
+      auth_status,
+    };
+
     const docRef = await userCollection.add(data);
     return { id: docRef.id, ...data };
   },

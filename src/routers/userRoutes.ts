@@ -1,7 +1,10 @@
 import { Router, Request, Response } from 'express';
+import registerController from '../controllers/users/insertController';
 import userModel from '../models/userModel';
 
 const router = Router();
+
+router.post('/register', registerController);
 
 router.get('/', (req: Request, res: Response) => {
   res.json({ mensagem: 'Bem-vindo ao backend em node!' })
@@ -13,16 +16,6 @@ router.get('/users', async (req: Request, res: Response) => {
     res.json(users);
   } catch (error) {
     res.status(500).json({ error: 'Erro ao buscar usuários' });
-  }
-});
-
-router.post('/users', async (req: Request, res: Response) => {
-  try {
-    const userData = req.body; // Dados do usuário no corpo da requisição
-    const newUser = await userModel.createUser(userData); // Chama a função createUser
-    res.status(201).json(newUser); // Retorna o novo usuário com status 201
-  } catch (error) {
-    res.status(500).json({ error: 'Erro ao criar usuário' });
   }
 });
 
