@@ -3,6 +3,8 @@ import { Router } from 'express';
 import registerController from '../controllers/users/insertController';
 import readController from '../controllers/users/readController';
 import loginController from '../controllers/users/loginController';
+import updateController from '../controllers/users/updateController';
+import deleteController from '../controllers/users/deleteController';
 import { verifyToken } from '../middlewares/verifyToken';
 import {
     homeController,
@@ -17,8 +19,8 @@ router.get('/', homeController);
 router.get('/user', verifyToken, readController);
 router.post('/register', registerController);
 router.post('/login', loginController);
-// router.put('/update/user/', verifyToken, updateController);
-// router.delete('/delete/user/', verifyToken, deleteController);
+router.put('/update/user/', verifyToken, updateController);
+router.delete('/delete/user/', verifyToken, deleteController);
 
 if (config.testMode) router.get('/users', listUsersController);
 // if (config.testMode) userRouter.get('/users/update/history', listUsersHistoryUpdateController);

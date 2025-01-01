@@ -1,7 +1,7 @@
 
 
 import { firestore } from 'firebase-admin';
-import { User, UserWithId } from '../types/user';
+import { User, UserWithId, UpdateUserRequest, UserOldUpdate } from '../types/user';
 import bcrypt from 'bcrypt';
 
 const db = firestore();
@@ -77,15 +77,104 @@ const UserModel = {
     return { id: doc.id, ...doc.data() } as UserWithId;
   },
 
-  async updateUser(userId: string, data: Partial<User>) {
-    await userCollection.doc(userId).update(data);
-    return { id: userId, ...data };
-  },
+  async updateUser(
+    userId: string,
+    user: Partial<UpdateUserRequest>,
+    oldUser: UserOldUpdate
+  ) {
+    try {
+      if (!user) {
+        return {
+          success: false,
+          message: 'Usuário não foi passado como parâmetro.',
+        };
+      }
 
-  async deleteUser(userId: string): Promise<{ message: string }> {
-    await userCollection.doc(userId).delete();
-    return { message: 'Usuário deletado com sucesso' };
-  },
+      const userExistsResult = await this.getUserById(userId);
+      if (!userExistsResult) {
+        return {
+          success: false,
+          message: 'Usuário não encontrado.',
+        };
+      }
+
+      if (user.email) {
+        const emailExistsResult = await this.getUserByEmail(user.email);
+        if (emailExistsResult && emailExistsResult.id !== userId) {
+          return {
+            success: false,
+            message: 'O e-mail fornecido já está em uso por outro usuário.',
+          };
+        }
+      }
+
+      const hashedPassword = user.password ? await hashPassword(user.password) : null;
+
+      const updates: Partial<UpdateUserRequest> = {
+        ...user,
+        password: hashedPassword || undefined,
+      };
+
+      Object.keys(updates).forEach((key) => {
+        if (updates[key as keyof UpdateUserRequest] == null) {
+          delete updates[key as keyof UpdateUserRequest];
+        }
+      });
+
+      const historyUpdate = {
+        updatedAt: new Date().toISOString(),
+        oldData: {
+          updatedBy: oldUser.ipAddress,
+          name: oldUser.name,
+          email: oldUser.email,
+          password: oldUser.password,
+        },
+        changes: updates,
+      };
+
+      const existingHistory = {
+        updates: userExistsResult.history?.updates || [],
+        deletions: userExistsResult.history?.deletions || [],
+      };
+
+     const updatedHistory = {
+        updates: [...existingHistory.updates, historyUpdate],
+        deletions: existingHistory.deletions,
+      };
+
+      await userCollection.doc(userId).update({
+        ...updates,
+        history: updatedHistory,
+      });
+
+      return {
+        success: true,
+        data: {
+          id: userId,
+          ...updates,
+          history: updatedHistory,
+        },
+        message: 'Usuário atualizado com sucesso.',
+      };
+    } catch (err) {
+      console.error('Erro ao atualizar o usuário:', err);
+      return {
+        success: false,
+        message: 'Erro ao atualizar o usuário.',
+      };
+    }
+  }
+
+
+
+  // async deleteUser(userId: string): Promise<{ message: string }> {
+  //   const result = await userCollection.doc(userId).delete();
+  //   return {
+  //     success: true,
+  //     data: result,
+  //     message: 'Usuário deletado com sucesso.',
+  //   };
+  // },
 };
 
 export default UserModel;

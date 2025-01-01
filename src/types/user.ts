@@ -2,6 +2,7 @@ export interface UserBase {
   name: string;
   email: string;
   password: string;
+  ipAddress?: string;
 }
 
 export interface User extends UserBase {
@@ -25,7 +26,7 @@ export interface HistoryEntry {
 }
 
 export interface UserJwt {
-  id: string;
+  id?: string;
   name: string;
   email: string;
 }
@@ -35,4 +36,10 @@ export interface AuthenticatedUser {
   email: string;
   name: string;
 }
+
+export interface UserOldUpdate extends UserBase {
+  ipAddress: string;
+}
+
+export interface UpdateUserRequest extends User, UserWithId {}
 
