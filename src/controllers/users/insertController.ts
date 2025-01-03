@@ -18,7 +18,10 @@ const registerController: any  = async (req: Request, res: Response) => {
       password,
       history: {
         updates: [],
-        deletions: []
+        deletions: {
+          deleted: false,
+          date: '',
+        }
       }
     };
     const userDd = await userModel.createUser(user);

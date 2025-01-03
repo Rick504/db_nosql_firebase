@@ -27,6 +27,8 @@ Antes de começar, você precisará de:
 
    ```bash
    PORT=5000
+   JWT_SECRET=qualquerchave
+   JWT_EXPIRE_IN=30m
    TEST_MODE=true
    ```
 

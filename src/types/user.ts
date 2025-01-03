@@ -15,7 +15,12 @@ export interface UserWithId extends User {
 
 export interface UserHistory {
   updates: HistoryEntry[];
-  deletions: HistoryEntry[];
+  deletions: UserDeletions;
+}
+
+export interface UserDeletions {
+  deleted: boolean;
+  date: string;
 }
 
 export interface HistoryEntry {

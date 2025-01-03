@@ -4,6 +4,7 @@ import userModel from '../../models/userModel';
 import { UserBase, UserJwt } from '../../types/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { setToken } from '../../security/token';
 
 const updateController: any = async (req: Request, res: Response) => {
   try {
@@ -41,16 +42,23 @@ const updateController: any = async (req: Request, res: Response) => {
 
     const updateResponse = await userModel.updateUser(id, updatedUser, oldUser);
 
-    if (!updateResponse.success) {
-      return res.status(400).json({ msgError: updateResponse.message });
-    }
+    if (!updateResponse.success) return res.status(400).json({ msgError: updateResponse.message });
 
     const responseUser: Partial<UserBase> = { ...updatedUser };
     delete responseUser.password;
 
+    const _userDataJWT = {
+      id,
+      name: updatedUser.name,
+      email: updatedUser.email
+    }
+
+    await setToken(_userDataJWT);
+
     res.status(200).json({
       message: 'Usuário atualizado com sucesso.',
       data: responseUser,
+      token
     });
   } catch (err) {
     console.error('Erro ao tentar atualizar conta:', err);

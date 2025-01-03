@@ -123,8 +123,8 @@ const UserModel = {
 
       const historyUpdate = {
         updatedAt: new Date().toISOString(),
+        updatedBy: oldUser.ipAddress,
         oldData: {
-          updatedBy: oldUser.ipAddress,
           name: oldUser.name,
           email: oldUser.email,
           password: oldUser.password,
