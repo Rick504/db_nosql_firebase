@@ -12,9 +12,7 @@ const loginController: any = async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Usuário ou senha incorretos.' });
     }
 
-    if (!userDb.auth_status) {
-      return res.status(401).json({ error: 'Falha ao efetuar login. Conta não autorizada.' });
-    }
+    if (!userDb.auth_status) return res.status(401).json({ error: 'Falha ao efetuar login. Conta não autorizada.' });
 
     const userValidaty: any = await UserModel.authUserLogin({
       email: email,

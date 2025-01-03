@@ -163,18 +163,35 @@ const UserModel = {
         message: 'Erro ao atualizar o usuário.',
       };
     }
-  }
+  },
 
+  async markUserAsDeleted(
+      userId: string,
+      ipAddress: string
+    ): Promise<{ updated: boolean }> {
+      try {
+        const userRef = userCollection.doc(userId);
+        const userDoc = await userRef.get();
 
+        if (!userDoc.exists) {
+          return { updated: false };
+        }
 
-  // async deleteUser(userId: string): Promise<{ message: string }> {
-  //   const result = await userCollection.doc(userId).delete();
-  //   return {
-  //     success: true,
-  //     data: result,
-  //     message: 'Usuário deletado com sucesso.',
-  //   };
-  // },
+        await userRef.update({
+          auth_status: false,
+          "history.deletions": {
+            deleted: true,
+            date: new Date().toISOString(),
+            ipAddress,
+          },
+        });
+
+        return { updated: true };
+      } catch (error) {
+        console.error('Erro ao marcar usuário como deletado:', error);
+        throw new Error('Erro ao atualizar o registro de deleção.');
+      }
+    },
 };
 
 export default UserModel;

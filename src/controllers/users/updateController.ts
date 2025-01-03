@@ -23,6 +23,8 @@ const updateController: any = async (req: Request, res: Response) => {
       return res.status(404).json({ msgError: 'Usuário não encontrado.' });
     }
 
+    if (!user.auth_status) return res.status(401).json({ error: 'Falha ao efetuar login. Conta não autorizada.' });
+
     if (currentPassword && !bcrypt.compareSync(currentPassword, user.password)) {
       return res.status(401).json({ msgError: 'Senha atual incorreta.' });
     }
