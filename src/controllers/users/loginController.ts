@@ -12,7 +12,7 @@ const loginController: any = async (req: Request, res: Response) => {
     if (!userDb || !bcrypt.compareSync(password, userDb.password))
     return res.status(401).json({ error: messages.login.invalidCredentials });;
 
-    if (!userDb.auth_status)
+    if (!userDb.authorization)
     return res.status(401).json({ error: messages.account.unauthorizedAccount });
 
     const userValidaty: any = await UserModel.authUserLogin({

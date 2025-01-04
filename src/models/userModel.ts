@@ -53,7 +53,7 @@ const UserModel = {
   },
 
   async createUser(user: User): Promise<UserWithId> {
-    const auth_status = true;
+    const authorization = true;
     const { name, email, password, history } = user;
 
     const _hashPassword = await hashPassword(password);
@@ -62,7 +62,7 @@ const UserModel = {
       name,
       email,
       password: _hashPassword,
-      auth_status,
+      authorization,
       history
     };
 
@@ -177,7 +177,7 @@ const UserModel = {
         }
 
         await userRef.update({
-          auth_status: false,
+          authorization: false,
           "history.deletions": {
             deleted: true,
             date: new Date().toISOString(),

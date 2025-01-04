@@ -6,7 +6,7 @@ export interface UserBase {
 }
 
 export interface User extends UserBase {
-  auth_status: boolean;
+  authorization: boolean;
   history: UserHistory;
 }
 

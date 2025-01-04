@@ -20,7 +20,7 @@ export async function verifyToken(req: Request, res: Response, next: NextFunctio
     if (!user)
     return res.status(404).json({ message: messages.user.userNotFound });
 
-    if (!user.auth_status)
+    if (!user.authorization)
     return res.status(403).json(
       {
         auth: false,
