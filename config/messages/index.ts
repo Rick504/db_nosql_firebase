@@ -4,9 +4,10 @@ export const messages = {
         tokenMissing: 'Token não fornecido.',
         invalidToken: 'Token inválido.',
         serverError: 'Erro interno ao verificar o token.',
-        errorGeneretedToekn: 'Erro ao gerar token.',
+        errorGeneretedToken: 'Erro ao gerar token.',
         invalidOrExpiredToken: 'Token inválido ou expirado.',
         tokenProcessingError: 'Erro ao processar o token ou buscar o usuário.',
+        jwTConfigurationMissing: 'Configuração do JWT está ausente. Verifique JWT_SECRET e JWT_EXPIRE_IN.'
     },
     user: {
         userIdNotFound: 'ID do usuário não encontrado no token.',
