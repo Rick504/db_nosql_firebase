@@ -5,7 +5,7 @@ import { getIpAddress } from '../../utils/getIpAddress'
 import { messages } from '../../../config/messages/deleteControllerMessages';
 import { UserWithId } from '../../types/user'
 
-const deleteController = async (req: Request, res: Response) => {
+const deleteController: any = async (req: Request, res: Response) => {
   try {
     const token = req.headers['x-access-token'] as string;
     const jwtSecret = process.env.JWT_SECRET as string;
