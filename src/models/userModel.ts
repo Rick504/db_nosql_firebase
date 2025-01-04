@@ -157,7 +157,6 @@ const UserModel = {
         message: 'Usuário atualizado com sucesso.',
       };
     } catch (err) {
-      console.error('Erro ao atualizar o usuário:', err);
       return {
         success: false,
         message: 'Erro ao atualizar o usuário.',
@@ -188,7 +187,6 @@ const UserModel = {
 
         return { updated: true };
       } catch (error) {
-        console.error('Erro ao marcar usuário como deletado:', error);
         throw new Error('Erro ao atualizar o registro de deleção.');
       }
     },
