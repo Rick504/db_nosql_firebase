@@ -11,11 +11,11 @@ const readController: any = async (req: Request, res: Response) => {
     const { id } = decoded.userDataJWT;
 
     if (!id) return res.status(404).json({ message: 'Erro ao pegar Id do Token' });
+
     const user: User  = await userModel.getUserById(id);
 
-    if (!user) {
-      return res.status(404).json({ message: 'Usuário não encontrado.' });
-    }
+    if (!user) return res.status(404).json({ message: 'Usuário não encontrado.' });
+
 
     if (!user.auth_status) return res.status(401).json({ error: 'Falha. Conta não autorizada.' });
 

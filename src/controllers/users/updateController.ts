@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getIpAddress } from '../../utils/getIpAddress'
 import userModel from '../../models/userModel';
-import { UserBase, UserJwt } from '../../types/user';
+import { UserBase, UserJwt, User } from '../../types/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { setToken } from '../../security/token';
@@ -15,14 +15,12 @@ const updateController: any = async (req: Request, res: Response) => {
 
     const { id } = decoded.userDataJWT;
     const { name, email, password, currentPassword } = req.body;
-    if (!id) return res.status(404).json({ msgError: 'Id Usuário não encontrado.' });
 
-    const user = await userModel.getUserById(id);
+    if (!id) return res.status(404).json({ msgError: 'Id Usuário não encontrado.'});
 
-    if (!user) {
-      return res.status(404).json({ msgError: 'Usuário não encontrado.' });
-    }
+    const user: User = await userModel.getUserById(id);
 
+    if (!user) return res.status(404).json({ msgError: 'Usuário não encontrado.'});
     if (!user.auth_status) return res.status(401).json({ error: 'Falha ao efetuar login. Conta não autorizada.' });
 
     if (currentPassword && !bcrypt.compareSync(currentPassword, user.password)) {

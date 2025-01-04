@@ -90,7 +90,7 @@ const UserModel = {
         };
       }
 
-      const userExistsResult = await this.getUserById(userId);
+      const userExistsResult: User = await this.getUserById(userId);
       if (!userExistsResult) {
         return {
           success: false,

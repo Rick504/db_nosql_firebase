@@ -22,7 +22,8 @@ const registerController: any  = async (req: Request, res: Response) => {
           deleted: false,
           date: '',
         }
-      }
+      },
+      auth_status: false
     };
     const userDd = await userModel.createUser(user);
 
