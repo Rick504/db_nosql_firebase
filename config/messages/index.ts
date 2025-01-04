@@ -30,6 +30,7 @@ export const messages = {
         currentPasswordIncorrect: 'Senha atual incorreta.',
         updateFailed: 'Erro ao tentar atualizar o usuário.',
         updateSuccess: 'Usuário atualizado com sucesso.',
+        emailAlreadyUpdated: 'E-mail já atualizado recentemente.',
         internalError: 'Erro interno ao tentar atualizar conta.',
     },
     delete: {

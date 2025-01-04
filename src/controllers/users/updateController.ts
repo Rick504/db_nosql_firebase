@@ -26,6 +26,9 @@ const updateController: any = async (req: Request, res: Response) => {
 
     const user: User = await userModel.getUserById(id);
 
+    if (email === user.email)
+    return res.status(404).json({ msgError: messages.update.emailAlreadyUpdated });
+
     if (currentPassword && !bcrypt.compareSync(currentPassword, user.password)) {
       return res.status(401).json({ msgError: messages.update.currentPasswordIncorrect });
     }
