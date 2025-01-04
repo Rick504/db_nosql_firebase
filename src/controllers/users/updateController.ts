@@ -26,12 +26,6 @@ const updateController: any = async (req: Request, res: Response) => {
 
     const user: User = await userModel.getUserById(id);
 
-    if (!user)
-    return res.status(404).json({ msgError: messages.user.userNotFound });
-
-    if (!user.auth_status)
-    return res.status(401).json({ msgError: messages.account.unauthorizedAccount });
-
     if (currentPassword && !bcrypt.compareSync(currentPassword, user.password)) {
       return res.status(401).json({ msgError: messages.update.currentPasswordIncorrect });
     }

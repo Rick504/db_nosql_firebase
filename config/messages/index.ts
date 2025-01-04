@@ -11,6 +11,7 @@ export const messages = {
     },
     user: {
         userIdNotFound: 'ID do usuário não encontrado no token.',
+        existingUser: 'Usuário já cadastrado.',
         userNotFound: 'Usuário não encontrado.',
         ErrortryingToFindUser: 'Erro ao tentar encontrar Usuário.',
     },

@@ -11,7 +11,7 @@ const registerController: any  = async (req: Request, res: Response) => {
     const existingUser = await userModel.getUserByEmail(email);
 
     if (existingUser)
-    return res.status(409).json({ message: messages.jwt.tokenMissing });
+    return res.status(409).json({ message: messages.user.existingUser });
 
     const user: User = {
       name,

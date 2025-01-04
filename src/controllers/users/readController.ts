@@ -25,12 +25,6 @@ const readController: any = async (req: Request, res: Response) => {
 
     const user: User = await userModel.getUserById(id);
 
-    if (!user)
-    return res.status(404).json({ message: messages.user.userNotFound });
-
-    if (!user.auth_status)
-    return res.status(401).json({ message: messages.account.unauthorizedAccount });
-
     return res.status(200).json(user);
   } catch (err) {
     return res.status(500).json({ message: messages.user.ErrortryingToFindUser });
