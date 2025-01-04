@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import userModel from '../../models/userModel';
 import { getIpAddress } from '../../utils/getIpAddress'
 import { messages } from '../../../config/messages/deleteControllerMessages';
+import { UserWithId } from '../../types/user'
 
 const deleteController = async (req: Request, res: Response) => {
   try {
@@ -17,7 +18,7 @@ const deleteController = async (req: Request, res: Response) => {
 
     let decoded;
     try {
-      decoded = jwt.verify(token, jwtSecret) as { userDataJWT: { id: string } };
+      decoded = jwt.verify(token, jwtSecret) as { userDataJWT: UserWithId };
     } catch (err) {
       return res.status(401).json({ message: messages.invalidOrExpiredToken });
     }
@@ -25,7 +26,7 @@ const deleteController = async (req: Request, res: Response) => {
     const { id } = decoded.userDataJWT;
 
     if (!id)
-      return res.status(400).json({ message: messages.userIdNotFound });
+    return res.status(400).json({ message: messages.userIdNotFound });
 
     const ipAddress = getIpAddress(req);
     const success = await userModel.markUserAsDeleted(id, ipAddress);

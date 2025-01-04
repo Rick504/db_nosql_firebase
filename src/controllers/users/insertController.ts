@@ -2,15 +2,16 @@ import { Request, Response } from 'express';
 import { setToken } from '../../security/token';
 import userModel from '../../models/userModel';
 import { User, UserJwt } from '../../types/user';
+import { messages } from '../../../config/messages/insertControllerMessages';
 
 const registerController: any  = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
 
     const existingUser = await userModel.getUserByEmail(email);
-    if (existingUser) {
-      return res.status(409).json('Email já cadastrado!');
-    }
+
+    if (existingUser)
+    return res.status(409).json({ message: messages.existingUser });
 
     const user: User = {
       name,
@@ -25,9 +26,8 @@ const registerController: any  = async (req: Request, res: Response) => {
       },
       auth_status: false
     };
+
     const userDd = await userModel.createUser(user);
-
-
     const userDataJWT: UserJwt = {
       id: userDd.id,
       name: userDd.name,
@@ -38,8 +38,7 @@ const registerController: any  = async (req: Request, res: Response) => {
 
     res.status(201).json(userDataJWT);
   } catch (err) {
-    console.log('Erro ao tentar cadastrar usuário.', err);
-    res.status(400).json('Erro ao tentar cadastrar usuário.');
+    res.status(400).json({ message: messages.internalError });
   }
 };
 export default registerController;

@@ -5,26 +5,36 @@ import { UserBase, UserJwt, User } from '../../types/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { setToken } from '../../security/token';
+import { messages } from '../../../config/messages/updateControllerMessages';
+import { messagesJwt } from '../../../config/messages/jwtMessages';
 
 const updateController: any = async (req: Request, res: Response) => {
   try {
     const token = req.headers['x-access-token'] as string;
     const jwtSecret = process.env.JWT_SECRET as string;
+
+    if (!jwtSecret)
+    return res.status(500).json({ msgError: messagesJwt.notFoudJwt });
+
     const decoded = jwt.verify(token, jwtSecret) as { userDataJWT: UserJwt };
     const ipAddress = getIpAddress(req)
 
     const { id } = decoded.userDataJWT;
     const { name, email, password, currentPassword } = req.body;
 
-    if (!id) return res.status(404).json({ msgError: 'Id Usuário não encontrado.'});
+     if (!id)
+    return res.status(404).json({ msgError: messages.userIdMissing });
 
     const user: User = await userModel.getUserById(id);
 
-    if (!user) return res.status(404).json({ msgError: 'Usuário não encontrado.'});
-    if (!user.auth_status) return res.status(401).json({ error: 'Falha ao efetuar login. Conta não autorizada.' });
+    if (!user)
+    return res.status(404).json({ msgError: messages.userNotFound });
+
+    if (!user.auth_status)
+    return res.status(401).json({ msgError: messages.unauthorizedAccount });
 
     if (currentPassword && !bcrypt.compareSync(currentPassword, user.password)) {
-      return res.status(401).json({ msgError: 'Senha atual incorreta.' });
+      return res.status(401).json({ msgError: messages.currentPasswordIncorrect });
     }
 
     const updatedUser: UserBase = {
@@ -56,13 +66,12 @@ const updateController: any = async (req: Request, res: Response) => {
     await setToken(_userDataJWT);
 
     res.status(200).json({
-      message: 'Usuário atualizado com sucesso.',
+      message: messages.updateSuccess,
       data: responseUser,
       token
     });
   } catch (err) {
-    console.error('Erro ao tentar atualizar conta:', err);
-    res.status(500).json({ msgError: 'Erro interno ao tentar atualizar conta.' });
+    res.status(500).json({ msgError: messages.internalError });
   }
 };
 
