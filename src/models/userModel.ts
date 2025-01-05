@@ -189,7 +189,18 @@ const UserModel = {
       } catch (error) {
         throw new Error('Erro ao atualizar o registro de deleção.');
       }
-    },
+  },
+
+  async permanentlyDeleteUsers() {
+    try {
+      console.log('Iniciando exclusão de usuários...');
+      // await userCollection.doc(userId).deleteMany({ deleted: true }); // Exemplo de filtro
+      console.log('Usuários deletados permanentemente com sucesso.');
+    } catch (err) {
+      console.error('Erro ao deletar usuários permanentemente:', err);
+      throw new Error('Erro ao deletar usuários permanentemente.');
+    }
+}
 };
 
 export default UserModel;

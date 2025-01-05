@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { config } from '../config/index';
 import { texts } from './utils/textLogs';
+import { initializeJobs } from './job';
 
 import admin from 'firebase-admin';
 admin.initializeApp({
@@ -27,6 +28,8 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({ origin: texts.localhost }));
+
+// initializeJobs();
 
 app.listen(config.port, () => {
    console.log(texts.start_server);
