@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/node-schedule": "^2.1.7",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -19,7 +20,8 @@
     "firebase": "^11.1.0",
     "firebase-admin": "^13.0.2",
     "i": "^0.3.7",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "node-schedule": "^2.1.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

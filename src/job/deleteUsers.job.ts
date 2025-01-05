@@ -9,7 +9,7 @@ export function scheduleDeleteUsersJob() {
   schedule.scheduleJob(scheduleTime, async () => {
     console.log(`[JOB] Iniciando exclusão definitiva de usuários (${config.testMode ? 'TEST' : 'PROD'}):`, new Date());
     try {
-      await UserModel.permanentlyDeleteUsers();
+      // await UserModel.permanentlyDeleteUsers();
       console.log('[JOB] Exclusão concluída com sucesso:', new Date());
     } catch (error) {
       console.error('[JOB] Erro durante a exclusão de usuários:', error);

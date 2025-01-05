@@ -1,11 +1,8 @@
-
-
 import { firestore } from 'firebase-admin';
 import { User, UserWithId, UpdateUserRequest, UserOldUpdate } from '../types/user';
 import bcrypt from 'bcrypt';
 
-const db = firestore();
-const userCollection = db.collection('users');
+const userCollection = firestore().collection('users');
 
 function hashPassword(password: string) {
   const saltRounds = 10
@@ -200,7 +197,7 @@ const UserModel = {
       console.error('Erro ao deletar usuários permanentemente:', err);
       throw new Error('Erro ao deletar usuários permanentemente.');
     }
-}
+  }
 };
 
 export default UserModel;

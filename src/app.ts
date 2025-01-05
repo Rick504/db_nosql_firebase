@@ -5,9 +5,9 @@ import { config } from '../config/index';
 import { texts } from './utils/textLogs';
 import { initializeJobs } from './job';
 
-import admin from 'firebase-admin';
-admin.initializeApp({
-  credential: admin.credential.cert("serviceAccountKey.json")
+import firebase from 'firebase-admin';
+firebase.initializeApp({
+  credential: firebase.credential.cert("serviceAccountKey.json")
 });
 
 import routes from './routers';
@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 
 app.use(cors({ origin: texts.localhost }));
 
-// initializeJobs();
+initializeJobs();
 
 app.listen(config.port, () => {
    console.log(texts.start_server);
