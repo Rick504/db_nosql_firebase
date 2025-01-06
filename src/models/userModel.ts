@@ -1,4 +1,4 @@
-import { firestore, userCollection } from '../firebaseAdmin';
+import { firestore, userCollection , usershistoryDeleteCollection} from '../firebaseAdmin';
 import { User, UserWithId, UpdateUserRequest, UserOldUpdate } from '../types/user';
 import bcrypt from 'bcrypt';
 
@@ -199,9 +199,16 @@ const UserModel = {
         .where('history.deletions.date', '==', _thirtyDaysAgo)
         .get();
 
-      if (snapshot.empty) {
-        console.log('Nenhum usuário encontrado para deletar conta.');
-        return;
+     if (snapshot.empty) {
+          console.log('Nenhum usuário encontrado.');
+      } else {
+          snapshot.forEach(doc => {
+              let userAddDelete = {
+                id: doc.id,
+                user: doc.data()
+              }
+              usershistoryDeleteCollection.add(userAddDelete)
+          });
       }
 
       const batch = firestore.batch();

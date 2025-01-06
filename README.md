@@ -34,6 +34,11 @@ Antes de começar, você precisará de:
 
    Isso configura a porta em que o servidor irá rodar. Você pode alterar o valor de PORT conforme sua necessidade.
 
+3. Criar collections no Firebase db:
+
+   - users
+   - users_history_delete
+
 ## Execução
 
     pnpm run dev
