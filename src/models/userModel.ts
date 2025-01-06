@@ -166,6 +166,7 @@ const UserModel = {
       try {
         const userRef = userCollection.doc(userId);
         const userDoc = await userRef.get();
+        const newDate = new Date().toISOString().slice(0, 10)
 
         if (!userDoc.exists) {
           return { updated: false };
@@ -175,7 +176,7 @@ const UserModel = {
           authorization: false,
           "history.deletions": {
             deleted: true,
-            date: new Date().toISOString(),
+            date: newDate,
             ipAddress,
           },
         });
@@ -186,14 +187,16 @@ const UserModel = {
       }
   },
 
-  async permanentlyDeleteUsers() {
+ async permanentlyDeleteUsers() {
     try {
       const now = new Date();
       const thirtyDaysAgo = new Date(now.setDate(now.getDate() - 30));
+      const _thirtyDaysAgo = thirtyDaysAgo.toISOString().slice(0, 10)
 
-      const snapshot = await userCollection
+      const snapshot = await firestore
+        .collection('users')
         .where('history.deletions.deleted', '==', true)
-        .where('history.deletions.date', '<=', thirtyDaysAgo)
+        .where('history.deletions.date', '==', _thirtyDaysAgo)
         .get();
 
       if (snapshot.empty) {
@@ -205,7 +208,7 @@ const UserModel = {
       let count = 0;
 
       snapshot.forEach((doc) => {
-        batch.delete(doc.ref);
+        batch.delete(doc.ref); // Adiciona a exclusão no batch
         count++;
       });
 
@@ -216,9 +219,12 @@ const UserModel = {
         console.log('Nenhum usuário a ser deletado.');
       }
     } catch (err) {
+      console.error('Erro ao deletar usuários permanentemente:', err);
       throw new Error('Erro ao deletar usuários permanentemente.');
     }
   }
+
+
 };
 
 export default UserModel;
