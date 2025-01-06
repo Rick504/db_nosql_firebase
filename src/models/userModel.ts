@@ -200,7 +200,7 @@ const UserModel = {
         .get();
 
       if (snapshot.empty) {
-        console.log('Nenhum usuário encontrado.');
+        console.log('Nenhum usuário encontrado para deletar conta.');
         return;
       }
 
