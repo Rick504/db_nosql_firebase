@@ -35,6 +35,12 @@ Antes de começar, você precisará de:
 
    Isso configura a porta em que o servidor irá rodar. Você pode alterar o valor de PORT conforme sua necessidade.
 
+3. pegue do Firebase o arquivo json de configuração e conexao com banco:
+
+   - Clique no ícone de engrenagem ⚙️ no canto superior esquerdo para abrir as Configurações do Projeto > Contas de serviço > Gerar nova chave privada
+
+   Fara um dowload do serviceAccountKey.json que vc colocara na raiz do projeto.
+
 ## Execução
 
     pnpm run dev
