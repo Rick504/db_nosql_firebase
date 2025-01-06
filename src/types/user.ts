@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 export interface UserBase {
   name: string;
   email: string;
@@ -21,7 +23,7 @@ export interface UserHistory {
 
 export interface UserDeletions {
   deleted: boolean;
-  date: string;
+  date: null | Timestamp;
 }
 
 export interface HistoryEntry {

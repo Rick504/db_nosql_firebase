@@ -1,4 +1,5 @@
-import { firestore, userCollection , usershistoryDeleteCollection} from '../firebaseAdmin';
+const { Timestamp } = require('firebase-admin').firestore;
+import { firestore, usersCollection , usershistoryDeleteCollection} from '../firebaseAdmin';
 import { User, UserWithId, UpdateUserRequest, UserOldUpdate } from '../types/user';
 import bcrypt from 'bcrypt';
 
@@ -9,7 +10,7 @@ function hashPassword(password: string) {
 
 const UserModel = {
   async getAllUsers(): Promise<UserWithId[]> {
-    const snapshot = await userCollection.get();
+    const snapshot = await usersCollection.get();
     return snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -17,7 +18,7 @@ const UserModel = {
   },
 
   async getUserByEmail(email: string) {
-    const querySnapshot = await userCollection.where('email', '==', email).get();
+    const querySnapshot = await usersCollection.where('email', '==', email).get();
     if (querySnapshot.empty) {
       return false;
     }
@@ -29,7 +30,7 @@ const UserModel = {
     const { email, password } = user;
 
     try {
-      const querySnapshot = await userCollection
+      const querySnapshot = await usersCollection
         .where('email', '==', email)
         .where('password', '==', password)
         .get();
@@ -61,13 +62,13 @@ const UserModel = {
       history
     };
 
-    const docRef = await userCollection.add(data);
+    const docRef = await usersCollection.add(data);
 
     return { id: docRef.id, ...data };
   },
 
   async getUserById(userId: string): Promise<UserWithId> {
-    const doc = await userCollection.doc(userId).get();
+    const doc = await usersCollection.doc(userId).get();
     if (!doc.exists) throw new Error('Usuário não encontrado');
     return { id: doc.id, ...doc.data() } as UserWithId;
   },
@@ -137,7 +138,7 @@ const UserModel = {
         deletions: existingHistory.deletions,
       };
 
-      await userCollection.doc(userId).update({
+      await usersCollection.doc(userId).update({
         ...updates,
         history: updatedHistory,
       });
@@ -164,23 +165,31 @@ const UserModel = {
       ipAddress: string
     ): Promise<{ updated: boolean }> {
       try {
-        const userRef = userCollection.doc(userId);
+        const userRef = usersCollection.doc(userId);
         const userDoc = await userRef.get();
-        const newDate = new Date().toISOString().slice(0, 10)
+        const now = new Date();
+        const seconds = Math.floor(now.getTime() / 1000);
+        const nanoseconds = (now.getTime() % 1000) * 1000000;
+
+        const firebaseTimestamp = {
+          seconds: seconds,
+          nanoseconds: nanoseconds
+        };
 
         if (!userDoc.exists) {
           return { updated: false };
         }
 
-        await userRef.update({
+        const updateFieldsUser = {
           authorization: false,
           "history.deletions": {
             deleted: true,
-            date: newDate,
+            date: firebaseTimestamp,
             ipAddress,
           },
-        });
+        }
 
+        await userRef.update(updateFieldsUser);
         return { updated: true };
       } catch (error) {
         throw new Error('Erro ao atualizar o registro de deleção.');
@@ -189,14 +198,11 @@ const UserModel = {
 
  async permanentlyDeleteUsers() {
     try {
-      const now = new Date();
-      const thirtyDaysAgo = new Date(now.setDate(now.getDate() - 30));
-      const _thirtyDaysAgo = thirtyDaysAgo.toISOString().slice(0, 10)
+     const thirtyDaysAgo = Timestamp.fromDate(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)); // 30 dias atrás
 
-      const snapshot = await firestore
-        .collection('users')
+      const snapshot = await usersCollection
         .where('history.deletions.deleted', '==', true)
-        .where('history.deletions.date', '==', _thirtyDaysAgo)
+        .where('history.deletions.date', '>=', thirtyDaysAgo)
         .get();
 
      if (snapshot.empty) {

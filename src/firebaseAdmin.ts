@@ -7,5 +7,5 @@ firebase.initializeApp({
 export default firebase;
 
 export const firestore = firebase.firestore();
-export const userCollection = firestore.collection('users');
+export const usersCollection = firestore.collection('users');
 export const usershistoryDeleteCollection = firestore.collection('users_history_delete');

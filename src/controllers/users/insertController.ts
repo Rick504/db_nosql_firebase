@@ -21,7 +21,7 @@ const registerController: any  = async (req: Request, res: Response) => {
         updates: [],
         deletions: {
           deleted: false,
-          date: '',
+          date: null,
         }
       },
       authorization: false
