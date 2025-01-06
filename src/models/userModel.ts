@@ -202,7 +202,7 @@ const UserModel = {
 
       const snapshot = await usersCollection
         .where('history.deletions.deleted', '==', true)
-        .where('history.deletions.date', '>=', thirtyDaysAgo)
+        .where('history.deletions.date.seconds', '>=', thirtyDaysAgo.seconds)
         .get();
 
      if (snapshot.empty) {
