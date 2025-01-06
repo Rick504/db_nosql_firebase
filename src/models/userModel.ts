@@ -188,14 +188,12 @@ const UserModel = {
 
   async permanentlyDeleteUsers() {
     try {
-      console.log('Iniciando exclusão de usuários marcados como deletados há mais de 30 dias...');
-
       const now = new Date();
       const thirtyDaysAgo = new Date(now.setDate(now.getDate() - 30));
 
       const snapshot = await userCollection
         .where('history.deletions.deleted', '==', true)
-        .where('history.deletions.date', '<=', thirtyDaysAgo.toISOString())
+        .where('history.deletions.date', '<=', thirtyDaysAgo)
         .get();
 
       if (snapshot.empty) {
@@ -218,7 +216,6 @@ const UserModel = {
         console.log('Nenhum usuário a ser deletado.');
       }
     } catch (err) {
-      console.error('Erro ao deletar usuários permanentemente:', err);
       throw new Error('Erro ao deletar usuários permanentemente.');
     }
   }
