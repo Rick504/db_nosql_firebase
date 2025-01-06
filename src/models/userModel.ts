@@ -167,14 +167,7 @@ const UserModel = {
       try {
         const userRef = usersCollection.doc(userId);
         const userDoc = await userRef.get();
-        const now = new Date();
-        const seconds = Math.floor(now.getTime() / 1000);
-        const nanoseconds = (now.getTime() % 1000) * 1000000;
-
-        const firebaseTimestamp = {
-          seconds: seconds,
-          nanoseconds: nanoseconds
-        };
+        const date = Timestamp.fromDate(new Date())
 
         if (!userDoc.exists) {
           return { updated: false };
@@ -184,7 +177,7 @@ const UserModel = {
           authorization: false,
           "history.deletions": {
             deleted: true,
-            date: firebaseTimestamp,
+            date: date,
             ipAddress,
           },
         }
