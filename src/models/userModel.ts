@@ -1,8 +1,6 @@
-import { firestore } from 'firebase-admin';
+import { firestore, userCollection } from '../firebaseAdmin';
 import { User, UserWithId, UpdateUserRequest, UserOldUpdate } from '../types/user';
 import bcrypt from 'bcrypt';
-
-const userCollection = firestore().collection('users');
 
 function hashPassword(password: string) {
   const saltRounds = 10
@@ -190,9 +188,35 @@ const UserModel = {
 
   async permanentlyDeleteUsers() {
     try {
-      console.log('Iniciando exclusão de usuários...');
-      // await userCollection.doc(userId).deleteMany({ deleted: true }); // Exemplo de filtro
-      console.log('Usuários deletados permanentemente com sucesso.');
+      console.log('Iniciando exclusão de usuários marcados como deletados há mais de 30 dias...');
+
+      const now = new Date();
+      const thirtyDaysAgo = new Date(now.setDate(now.getDate() - 30));
+
+      const snapshot = await userCollection
+        .where('history.deletions.deleted', '==', true)
+        .where('history.deletions.date', '<=', thirtyDaysAgo.toISOString())
+        .get();
+
+      if (snapshot.empty) {
+        console.log('Nenhum usuário encontrado.');
+        return;
+      }
+
+      const batch = firestore.batch();
+      let count = 0;
+
+      snapshot.forEach((doc) => {
+        batch.delete(doc.ref);
+        count++;
+      });
+
+      if (count > 0) {
+        await batch.commit();
+        console.log(`${count} usuários deletados permanentemente com sucesso.`);
+      } else {
+        console.log('Nenhum usuário a ser deletado.');
+      }
     } catch (err) {
       console.error('Erro ao deletar usuários permanentemente:', err);
       throw new Error('Erro ao deletar usuários permanentemente.');

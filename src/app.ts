@@ -4,12 +4,7 @@ import cors from 'cors';
 import { config } from '../config/index';
 import { texts } from './utils/textLogs';
 import { initializeJobs } from './job';
-
-import firebase from 'firebase-admin';
-firebase.initializeApp({
-  credential: firebase.credential.cert("serviceAccountKey.json")
-});
-
+import './firebaseAdmin';
 import routes from './routers';
 
 dotenv.config();
