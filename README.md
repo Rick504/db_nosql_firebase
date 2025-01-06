@@ -1,6 +1,7 @@
 # Aplicação Express com TypeScript
 
-Esta é uma aplicação básica utilizando **TypeScript**, **Express**, **Routers**, **CORS** e **Variáveis de Ambiente**. O objetivo desse projeto é servir como um ponto de partida para aplicações Express com TypeScript e práticas comuns de organização de código e configuração de ambiente.
+CRUD usando banco de dados Firebase nosql, sendo armazenado tambem no objeto do usuario as atualizações de nome,
+e-mail e senhas, utilizando tambem collections de historico de deleção de usuarios e schedules de programação de deleção dos ususarios inativos.
 
 ## Requisitos
 
