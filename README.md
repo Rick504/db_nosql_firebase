@@ -1,7 +1,7 @@
 # Aplicação Express com TypeScript
 
-CRUD usando banco de dados Firebase nosql, sendo armazenado tambem no objeto do usuario as atualizações de nome,
-e-mail e senhas, utilizando tambem collections de historico de deleção de usuarios e schedules de programação de deleção dos ususarios inativos.
+CRUD usando banco de dados Firebase NoSQL, sendo armazenado também no objeto do usuário as atualizações de nome,
+e-mail e senhas, utilizando também collections de histórico de deleção de usuários e schedules de programação de deleção dos usuários inativos.
 
 ## Requisitos
 
