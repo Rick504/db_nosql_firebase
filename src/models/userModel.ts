@@ -208,7 +208,7 @@ const UserModel = {
       let count = 0;
 
       snapshot.forEach((doc) => {
-        batch.delete(doc.ref); // Adiciona a exclusão no batch
+        batch.delete(doc.ref);
         count++;
       });
 
@@ -223,8 +223,6 @@ const UserModel = {
       throw new Error('Erro ao deletar usuários permanentemente.');
     }
   }
-
-
 };
 
 export default UserModel;
