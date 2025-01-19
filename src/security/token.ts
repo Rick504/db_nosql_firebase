@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { messages } from '../../config/messages/index';
+import { texts } from '../config/textsLogs/index';
 
 export async function setToken(userDataJWT: any) {
   const jwtSecret = process.env.JWT_SECRET as string;
@@ -7,13 +7,13 @@ export async function setToken(userDataJWT: any) {
   try {
 
     if (!jwtSecret || !jwtExpiresIn)
-    throw new Error( messages.jwt.jwTConfigurationMissing );
+    throw new Error(texts.jwt.jwTConfigurationMissing);
 
     const token = jwt.sign({ userDataJWT }, jwtSecret, {
       expiresIn: jwtExpiresIn,
     });
     return token;
   } catch (err) {
-    return { msgError: messages.jwt.errorGeneretedToken };
+    return { response: texts.jwt.errorGeneretedToken };
   }
 }

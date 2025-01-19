@@ -1,4 +1,4 @@
-import { config } from '../../config';
+import { config } from '../config';
 import { Router } from 'express';
 import registerController from '../controllers/users/insertController';
 import readController from '../controllers/users/readController';

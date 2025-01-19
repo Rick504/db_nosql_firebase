@@ -9,3 +9,4 @@ export default firebase;
 export const firestore = firebase.firestore();
 export const usersCollection = firestore.collection('users');
 export const usershistoryDeleteCollection = firestore.collection('users_history_delete');
+export const chatsCollection = firestore.collection('chats');

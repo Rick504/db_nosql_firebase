@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { setToken } from '../../security/token';
 import userModel from '../../models/userModel';
 import { User, UserJwt } from '../../types/user';
-import { messages } from '../../../config/messages/index';
+import { texts } from '../../config/textsLogs/index';
 
 const registerController: any  = async (req: Request, res: Response) => {
   try {
@@ -11,7 +11,7 @@ const registerController: any  = async (req: Request, res: Response) => {
     const existingUser = await userModel.getUserByEmail(email);
 
     if (existingUser)
-    return res.status(409).json({ message: messages.user.existingUser });
+    return res.status(409).json({ response: texts.user.existingUser });
 
     const user: User = {
       name,
@@ -38,7 +38,7 @@ const registerController: any  = async (req: Request, res: Response) => {
 
     res.status(201).json(userDataJWT);
   } catch (err) {
-    res.status(400).json({ message: messages.update.internalError });
+    res.status(400).json({ response: texts.update.internalError });
   }
 };
 export default registerController;

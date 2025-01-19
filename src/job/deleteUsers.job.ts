@@ -1,6 +1,6 @@
 import schedule from 'node-schedule';
 import UserModel from '../models/userModel';
-import { config } from '../../config';
+import { config } from '../config';
 
 export function scheduleDeleteUsersJob() {
   // Define o horário com base no modo as 15:45 ou 02:00

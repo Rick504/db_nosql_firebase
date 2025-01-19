@@ -5,7 +5,7 @@ import { UserBase, UserJwt, User } from '../../types/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { setToken } from '../../security/token';
-import { messages } from '../../../config/messages/index';
+import { texts } from '../../config/textsLogs/index';
 
 const updateController: any = async (req: Request, res: Response) => {
   try {
@@ -13,7 +13,7 @@ const updateController: any = async (req: Request, res: Response) => {
     const jwtSecret = process.env.JWT_SECRET as string;
 
     if (!jwtSecret)
-    return res.status(500).json({ msgError: messages.jwt.notFoudJwt });
+    return res.status(500).json({ msgError: texts.jwt.notFoudJwt });
 
     const decoded = jwt.verify(token, jwtSecret) as { userDataJWT: UserJwt };
     const ipAddress = getIpAddress(req)
@@ -22,15 +22,15 @@ const updateController: any = async (req: Request, res: Response) => {
     const { name, email, password, currentPassword } = req.body;
 
      if (!id)
-    return res.status(404).json({ msgError: messages.user.userIdNotFound });
+    return res.status(404).json({ msgError: texts.user.userIdNotFound });
 
     const user: User = await userModel.getUserById(id);
 
     if (email === user.email)
-    return res.status(404).json({ msgError: messages.update.emailAlreadyUpdated });
+    return res.status(404).json({ msgError: texts.update.emailAlreadyUpdated });
 
     if (currentPassword && !bcrypt.compareSync(currentPassword, user.password)) {
-      return res.status(401).json({ msgError: messages.update.currentPasswordIncorrect });
+      return res.status(401).json({ msgError: texts.update.currentPasswordIncorrect });
     }
 
     const updatedUser: UserBase = {
@@ -62,12 +62,12 @@ const updateController: any = async (req: Request, res: Response) => {
     await setToken(_userDataJWT);
 
     res.status(200).json({
-      message: messages.update.updateSuccess,
+      message: texts.update.updateSuccess,
       data: responseUser,
       token
     });
   } catch (err) {
-    res.status(500).json({ msgError: messages.update.internalError });
+    res.status(500).json({ msgError: texts.update.internalError });
   }
 };
 

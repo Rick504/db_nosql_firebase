@@ -1,4 +1,5 @@
 const { Timestamp } = require('firebase-admin').firestore;
+import { texts } from '../config/textsLogs/index';
 import { firestore, usersCollection , usershistoryDeleteCollection} from '../firebaseAdmin';
 import { User, UserWithId, UpdateUserRequest, UserOldUpdate } from '../types/user';
 import bcrypt from 'bcrypt';
@@ -19,9 +20,7 @@ const UserModel = {
 
   async getUserByEmail(email: string) {
     const querySnapshot = await usersCollection.where('email', '==', email).get();
-    if (querySnapshot.empty) {
-      return false;
-    }
+    if (querySnapshot.empty) return false;
     const user = querySnapshot.docs[0].data();
     return { id: querySnapshot.docs[0].id, ...user };
   },
@@ -69,7 +68,7 @@ const UserModel = {
 
   async getUserById(userId: string): Promise<UserWithId> {
     const doc = await usersCollection.doc(userId).get();
-    if (!doc.exists) throw new Error('Usuário não encontrado');
+    if (!doc.exists) throw new Error(texts.user.userNotFound);
     return { id: doc.id, ...doc.data() } as UserWithId;
   },
 
@@ -90,7 +89,7 @@ const UserModel = {
       if (!userExistsResult) {
         return {
           success: false,
-          message: 'Usuário não encontrado.',
+          message: texts.user.userNotFound,
         };
       }
 
