@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { config } from '../config/index';
+import { config } from './config/index';
 import { texts } from './utils/textLogs';
 import { initializeJobs } from './job';
 import './firebaseAdmin';

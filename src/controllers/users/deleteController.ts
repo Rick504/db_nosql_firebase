@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import userModel from '../../models/userModel';
 import { getIpAddress } from '../../utils/getIpAddress'
 import { UserWithId } from '../../types/user'
-import { messages } from '../../../config/messages/index';
+import { messages } from '../../config/messages/index';
 
 const deleteController: any = async (req: Request, res: Response) => {
   try {

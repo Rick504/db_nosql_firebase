@@ -5,7 +5,7 @@ import { UserBase, UserJwt, User } from '../../types/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { setToken } from '../../security/token';
-import { messages } from '../../../config/messages/index';
+import { messages } from '../../config/messages/index';
 
 const updateController: any = async (req: Request, res: Response) => {
   try {

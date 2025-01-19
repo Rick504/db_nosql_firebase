@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { setToken } from '../../security/token';
 import UserModel from '../../models/userModel';
 import bcrypt from 'bcrypt';
-import { messages } from '../../../config/messages/index';
+import { messages } from '../../config/messages/index';
 
 const loginController: any = async (req: Request, res: Response) => {
   try {

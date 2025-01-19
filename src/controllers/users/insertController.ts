@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { setToken } from '../../security/token';
 import userModel from '../../models/userModel';
 import { User, UserJwt } from '../../types/user';
-import { messages } from '../../../config/messages/index';
+import { messages } from '../../config/messages/index';
 
 const registerController: any  = async (req: Request, res: Response) => {
   try {

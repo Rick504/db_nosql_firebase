@@ -1,4 +1,4 @@
-import { config } from '../../config';
+import { config } from '../config';
 
 export const texts = {
     schedule_remove_users: ` 🔄 node schedule - Tarefa agendada: Remoção de usuários inativos `,

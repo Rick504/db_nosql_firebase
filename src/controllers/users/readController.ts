@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import userModel from '../../models/userModel';
 import { UserJwt, User } from '../../types/user';
-import { messages } from '../../../config/messages/index';
+import { messages } from '../../config/messages/index';
 
 const readController: any = async (req: Request, res: Response) => {
   try {

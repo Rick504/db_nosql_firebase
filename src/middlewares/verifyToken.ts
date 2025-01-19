@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { JwtPayloadCustom } from '../types/jwt';
 import { User } from '../types/user';
 import UserModel from '../models/userModel';
-import { messages } from '../../config/messages/index';
+import { messages } from '../config/messages/index';
 
 export async function verifyToken(req: Request, res: Response, next: NextFunction): Promise<any> {
   const jwtSecret = process.env.JWT_SECRET as string;

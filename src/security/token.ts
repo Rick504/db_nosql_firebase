@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { messages } from '../../config/messages/index';
+import { messages } from '../config/messages/index';
 
 export async function setToken(userDataJWT: any) {
   const jwtSecret = process.env.JWT_SECRET as string;
